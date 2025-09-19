@@ -1,20 +1,43 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# ------------------------------------------------------------------
+# Script Hub - Entry Point
+# ------------------------------------------------------------------
+# Provides a single entry point for managing scripts:
+#   run  -> interactive script selection and execution (default)
+#   list -> list all scripts in the collection
+#   add  -> add a new script to the collection
+# ------------------------------------------------------------------
+
+# Base paths
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPT_DIR="$BASE_DIR/scripts"
 
+# Source core modules
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/runner.sh"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/add.sh"
 
-# Default to "run" if no argument is provided
+# ------------------------------------------------------------------
+# Default command: run (interactive)
+# ------------------------------------------------------------------
 CMD="${1:-run}"
-shift || true  # remove first argument if it exists, safe even if none
+shift || true # remove first argument if it exists; safe if none
 
+# ------------------------------------------------------------------
+# Dispatch command to appropriate handler
+# ------------------------------------------------------------------
 case "$CMD" in
-  run|list) handle_runner "$CMD" "$@" ;;
-  add) handle_add "$@" ;;
-  *) echo "Usage: $0 {run|list|add <file>}" >&2; exit 1 ;;
+run | list)
+	handle_runner "$CMD" "$@"
+	;;
+add)
+	handle_add "$@"
+	;;
+*)
+	echo "Usage: $0 {run|list|add <file> [subfolder]}" >&2
+	exit 1
+	;;
 esac
