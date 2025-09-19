@@ -13,41 +13,39 @@ LAUNCHER="$INSTALL_DIR/scripthub"
 # Functions
 # ------------------------------------------------------------------
 
-check_mise() {
-	if ! command -v mise >/dev/null 2>&1; then
+# Install and activate Mise
+ensure_mise() {
+	if ! command -v mise &>/dev/null; then
 		echo "⚠️  'mise' not found! Installing..."
 		curl -fsSL https://mise.run | sh
 		export PATH="$HOME/.local/bin:$PATH"
+	fi
 
-		# Activate for current session (default to bash)
-		eval "$("$HOME"/.local/bin/mise activate bash)"
+	# Activate for current session
+	eval "$("$HOME"/.local/bin/mise activate bash)"
 
-		# Persist activation in rc files
-		if [[ -f "$HOME/.bashrc" ]] && ! grep -q "mise activate bash" "$HOME/.bashrc"; then
-			echo "eval \"\$HOME/.local/bin/mise activate bash\"" >>"$HOME/.bashrc"
-			echo "✅ Added mise activate to ~/.bashrc"
-		fi
+	# Persist activation in rc files
+	if [[ -f "$HOME/.bashrc" ]] && ! grep -q "mise activate bash" "$HOME/.bashrc"; then
+		echo "eval ""$HOME"/.local/bin/mise activate bash"" >>"$HOME/.bashrc"
+		echo "✅ Added mise activate to ~/.bashrc"
+	fi
 
-		if [[ -f "$HOME/.zshrc" ]] && ! grep -q "mise activate zsh" "$HOME/.zshrc"; then
-			echo "eval \"\$HOME/.local/bin/mise activate zsh\"" >>"$HOME/.zshrc"
-			echo "✅ Added mise activate to ~/.zshrc"
-		fi
-
-		echo "✅ 'mise' installed!"
-	else
-		# Ensure current session also knows mise
-		eval "$("$HOME"/.local/bin/mise activate bash)"
+	if [[ -f "$HOME/.zshrc" ]] && ! grep -q "mise activate zsh" "$HOME/.zshrc"; then
+		echo "eval ""$HOME"/.local/bin/mise activate zsh"" >>"$HOME/.zshrc"
+		echo "✅ Added mise activate to ~/.zshrc"
 	fi
 }
 
-install_gum() {
-	if ! command -v gum >/dev/null 2>&1; then
+# Ensure Gum is available via Mise
+ensure_gum() {
+	if ! command -v gum &>/dev/null; then
 		echo "⚠️  'gum' not found! Installing via mise..."
-		mise install
-		echo "✅ 'gum' installed!"
+		mise use -g gum@latest
+		echo "✅ 'gum' activated!"
 	fi
 }
 
+# Clone repo if missing
 clone_repo_if_missing() {
 	if [[ ! -d "$INSTALL_DIR" ]]; then
 		echo "📦 Scripthub not found in $INSTALL_DIR — cloning..."
@@ -57,6 +55,7 @@ clone_repo_if_missing() {
 	fi
 }
 
+# Add install dir to PATH in rc files
 add_to_path_file() {
 	local rc_file=$1
 	if [[ -f "$rc_file" ]] && ! grep -q "$INSTALL_DIR" "$rc_file"; then
@@ -121,8 +120,8 @@ dispatch_command() {
 # Main
 # ------------------------------------------------------------------
 main() {
-	check_mise
-	install_gum
+	ensure_mise
+	ensure_gum
 	clone_repo_if_missing
 	ensure_path
 	resolve_base_dir
