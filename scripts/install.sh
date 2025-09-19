@@ -2,80 +2,97 @@
 set -euo pipefail
 
 # ------------------------------------------------------------------
-# Scripthub Installation Script (Functional)
-# Installs Mise, Gum, sets up PATH, updates shell rc files, trusts config
+# Scripthub Installer
 # ------------------------------------------------------------------
 
+REPO_URL="https://github.com/HYP3R00T/scripthub"
 INSTALL_DIR="$HOME/.local/share/scripthub"
-MISERUN="$HOME/.local/bin/mise"
 
 # ------------------------------------------------------------------
 # Functions
 # ------------------------------------------------------------------
 
-add_to_rc() {
-	local line="$1"
-	local rc_file="$2"
-	if [[ -f "$rc_file" ]] && ! grep -Fxq "$line" "$rc_file"; then
-		echo "$line" >>"$rc_file"
-		echo "✅ Added to $rc_file"
-	fi
-}
-
 install_mise() {
 	if ! command -v mise &>/dev/null; then
 		echo "⚠️  'mise' not found! Installing..."
 		curl -fsSL https://mise.run | sh
+
+		# Persist for future shells
+		if [[ -f "$HOME/.bashrc" ]] && ! grep -q "mise activate bash" "$HOME/.bashrc"; then
+			echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >>"$HOME/.bashrc"
+			echo "eval \"$HOME/.local/bin/mise activate bash\"" >>"$HOME/.bashrc"
+			echo "✅ Added mise path and activation to ~/.bashrc"
+		fi
+
+		if [[ -f "$HOME/.zshrc" ]] && ! grep -q "mise activate zsh" "$HOME/.zshrc"; then
+			echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >>"$HOME/.zshrc"
+			echo "eval \"$HOME/.local/bin/mise activate zsh\"" >>"$HOME/.zshrc"
+			echo "✅ Added mise path and activation to ~/.zshrc"
+		fi
+
 		echo "✅ 'mise' installed!"
+		echo "💡 Please run 'source ~/.bashrc' or open a new terminal before using scripthub."
 	else
-		echo "✅ 'mise' already installed"
+		echo "✅ 'mise' already installed!"
 	fi
+}
 
-	# Ensure PATH and activation persist
-	for rc_file in "$HOME/.bashrc" "$HOME/.zshrc"; do
-		add_to_rc "export PATH=\"\$HOME/.local/bin:\$PATH\"" "$rc_file"
-		shell=$(basename "$rc_file" | sed 's/rc//')
-		add_to_rc "eval \"\$HOME/.local/bin/mise activate $shell\"" "$rc_file"
-	done
-
-	# Activate for current session
-	export PATH="$HOME/.local/bin:$PATH"
-	eval "$("$MISERUN" activate bash)"
+trust_mise_config() {
+	# Trust scripthub config if not already trusted
+	CONFIG_FILE="$INSTALL_DIR/mise.toml"
+	if [[ -f "$CONFIG_FILE" ]]; then
+		echo "🔐 Trusting scripthub mise config..."
+		mise trust "$CONFIG_FILE" &>/dev/null || true
+		echo "✅ Config trusted"
+	fi
 }
 
 install_gum() {
 	if ! command -v gum &>/dev/null; then
-		echo "⚠️  'gum' not found! Installing via Mise..."
-		"$MISERUN" use -g gum@latest
-		echo "✅ 'gum' activated!"
+		echo "⚠️  'gum' not found! Installing via mise..."
+		mise use -g gum@latest
+		echo "✅ 'gum' installed!"
 	else
 		echo "✅ 'gum' already available"
 	fi
 }
 
-trust_mise_config() {
-	local config_file="$INSTALL_DIR/mise.toml"
-	if [[ -f "$config_file" ]]; then
-		"$MISERUN" trust "$config_file" &>/dev/null || true
-		echo "✅ Trusted $config_file"
+add_to_path_file() {
+	local rc_file=$1
+	if [[ -f "$rc_file" ]] && ! grep -q "$INSTALL_DIR" "$rc_file"; then
+		echo "export PATH=\"$INSTALL_DIR:\$PATH\"" >>"$rc_file"
+		echo "✅ Added $INSTALL_DIR to $rc_file"
 	fi
 }
 
 ensure_path() {
 	if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
 		export PATH="$INSTALL_DIR:$PATH"
-		for rc_file in "$HOME/.bashrc" "$HOME/.zshrc"; do
-			add_to_rc "export PATH=\"$INSTALL_DIR:\$PATH\"" "$rc_file"
-		done
-		echo "✅ Updated PATH for current session and rc files"
+		add_to_path_file "$HOME/.bashrc"
+		add_to_path_file "$HOME/.zshrc"
+		echo "✅ PATH updated for current session and future shells"
 	fi
 }
 
-source_rc_files() {
-	# shellcheck disable=SC1091
-	[[ -f "$HOME/.bashrc" ]] && source "$HOME/.bashrc"
-	# shellcheck disable=SC1091
-	[[ -f "$HOME/.zshrc" ]] && source "$HOME/.zshrc"
+install_scripthub() {
+	if [[ ! -d "$INSTALL_DIR" ]]; then
+		echo "📦 Installing scripthub..."
+		git clone "$REPO_URL" "$INSTALL_DIR"
+		chmod +x "$INSTALL_DIR/scripthub"
+		echo "✅ Scripthub installed at $INSTALL_DIR"
+	else
+		echo "✅ Scripthub already installed"
+	fi
+}
+
+final_tips() {
+	echo
+	echo "🎉 Installation complete!"
+	echo "💡 Tip: Reload your shell or run:"
+	echo "      source ~/.bashrc  # for Bash"
+	echo "      source ~/.zshrc   # for Zsh"
+	echo "💡 You can now run: scripthub help"
+	echo
 }
 
 # ------------------------------------------------------------------
@@ -84,10 +101,10 @@ source_rc_files() {
 main() {
 	install_mise
 	install_gum
-	trust_mise_config
+	install_scripthub
 	ensure_path
-	source_rc_files
-	echo "🎉 Installation complete! Restart your terminal or run 'source ~/.bashrc' or 'source ~/.zshrc' to refresh."
+	trust_mise_config
+	final_tips
 }
 
 main "$@"
