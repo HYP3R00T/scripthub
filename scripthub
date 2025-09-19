@@ -19,6 +19,8 @@ SCRIPT_DIR="$BASE_DIR/scripts"
 source "$SCRIPT_DIR/runner.sh"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/add.sh"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/help.sh"
 
 # ------------------------------------------------------------------
 # Default command: run (interactive)
@@ -30,14 +32,11 @@ shift || true # remove first argument if it exists; safe if none
 # Dispatch command to appropriate handler
 # ------------------------------------------------------------------
 case "$CMD" in
-run | list)
-	handle_runner "$CMD" "$@"
-	;;
-add)
-	handle_add "$@"
-	;;
+run | list) handle_runner "$CMD" "$@" ;;
+add) handle_add "$@" ;;
+help | --help | -h) show_help ;;
 *)
-	echo "Usage: $0 {run|list|add <file> [subfolder]}" >&2
+	echo "Usage: $0 {run|list|add <file>|help}" >&2
 	exit 1
 	;;
 esac
