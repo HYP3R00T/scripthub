@@ -2,77 +2,15 @@
 set -euo pipefail
 
 # ------------------------------------------------------------------
-# Scripthub Bootstrap + Entry Point (Modular)
+# Scripthub Entry Point (Modular)
 # ------------------------------------------------------------------
 
-REPO_URL="https://github.com/HYP3R00T/scripthub"
 INSTALL_DIR="$HOME/.local/share/scripthub"
-LAUNCHER="$INSTALL_DIR/scripthub"
+SCRIPT_DIR="$INSTALL_DIR/scripts"
 
 # ------------------------------------------------------------------
 # Functions
 # ------------------------------------------------------------------
-
-# Install and activate Mise
-ensure_mise() {
-	if ! command -v mise &>/dev/null; then
-		echo "⚠️  'mise' not found! Installing..."
-		curl -fsSL https://mise.run | sh
-		export PATH="$HOME/.local/bin:$PATH"
-	fi
-
-	# Activate for current session
-	eval "$("$HOME"/.local/bin/mise activate bash)"
-
-	# Persist activation in rc files
-	if [[ -f "$HOME/.bashrc" ]] && ! grep -q "mise activate bash" "$HOME/.bashrc"; then
-		echo "eval ""$HOME"/.local/bin/mise activate bash"" >>"$HOME/.bashrc"
-		echo "✅ Added mise activate to ~/.bashrc"
-	fi
-
-	if [[ -f "$HOME/.zshrc" ]] && ! grep -q "mise activate zsh" "$HOME/.zshrc"; then
-		echo "eval ""$HOME"/.local/bin/mise activate zsh"" >>"$HOME/.zshrc"
-		echo "✅ Added mise activate to ~/.zshrc"
-	fi
-}
-
-# Ensure Gum is available via Mise
-ensure_gum() {
-	if ! command -v gum &>/dev/null; then
-		echo "⚠️  'gum' not found! Installing via mise..."
-		mise use -g gum@latest
-		echo "✅ 'gum' activated!"
-	fi
-}
-
-# Clone repo if missing
-clone_repo_if_missing() {
-	if [[ ! -d "$INSTALL_DIR" ]]; then
-		echo "📦 Scripthub not found in $INSTALL_DIR — cloning..."
-		git clone "$REPO_URL" "$INSTALL_DIR"
-		chmod +x "$LAUNCHER"
-		echo "✅ Scripthub installed!"
-	fi
-}
-
-# Add install dir to PATH in rc files
-add_to_path_file() {
-	local rc_file=$1
-	if [[ -f "$rc_file" ]] && ! grep -q "$INSTALL_DIR" "$rc_file"; then
-		echo "export PATH=\"$INSTALL_DIR:\$PATH\"" >>"$rc_file"
-		echo "✅ Updated $rc_file"
-	fi
-}
-
-ensure_path() {
-	if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
-		echo "🟢 Adding $INSTALL_DIR to PATH in shell config files..."
-		add_to_path_file "$HOME/.bashrc"
-		add_to_path_file "$HOME/.zshrc"
-		export PATH="$INSTALL_DIR:$PATH"
-		echo "✅ Updated PATH for current session"
-	fi
-}
 
 resolve_base_dir() {
 	local source="${BASH_SOURCE[0]}"
@@ -120,10 +58,14 @@ dispatch_command() {
 # Main
 # ------------------------------------------------------------------
 main() {
-	ensure_mise
-	ensure_gum
-	clone_repo_if_missing
-	ensure_path
+	# Check if core scripts exist
+	if [[ ! -d "$SCRIPT_DIR" ]] || [[ ! -f "$SCRIPT_DIR/runner.sh" ]]; then
+		echo "⚠️  Scripthub is not fully installed!"
+		echo "Please run the installer first:"
+		echo "    $INSTALL_DIR/scripts/install.sh"
+		exit 1
+	fi
+
 	resolve_base_dir
 	source_modules
 	dispatch_command "$@"
