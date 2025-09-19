@@ -18,7 +18,25 @@ check_mise() {
 		echo "⚠️  'mise' not found! Installing..."
 		curl -fsSL https://mise.run | sh
 		export PATH="$HOME/.local/bin:$PATH"
+
+		# Activate for current session (default to bash)
+		eval "$("$HOME"/.local/bin/mise activate bash)"
+
+		# Persist activation in rc files
+		if [[ -f "$HOME/.bashrc" ]] && ! grep -q "mise activate bash" "$HOME/.bashrc"; then
+			echo "eval \"\$HOME/.local/bin/mise activate bash\"" >>"$HOME/.bashrc"
+			echo "✅ Added mise activate to ~/.bashrc"
+		fi
+
+		if [[ -f "$HOME/.zshrc" ]] && ! grep -q "mise activate zsh" "$HOME/.zshrc"; then
+			echo "eval \"\$HOME/.local/bin/mise activate zsh\"" >>"$HOME/.zshrc"
+			echo "✅ Added mise activate to ~/.zshrc"
+		fi
+
 		echo "✅ 'mise' installed!"
+	else
+		# Ensure current session also knows mise
+		eval "$("$HOME"/.local/bin/mise activate bash)"
 	fi
 }
 
