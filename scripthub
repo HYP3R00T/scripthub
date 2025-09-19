@@ -25,7 +25,7 @@ check_mise() {
 install_gum() {
 	if ! command -v gum >/dev/null 2>&1; then
 		echo "⚠️  'gum' not found! Installing via mise..."
-		mise install charmbracelet/gum
+		mise install
 		echo "✅ 'gum' installed!"
 	fi
 }
