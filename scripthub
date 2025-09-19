@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+list_scripts() {
+  [ -d "$SCRIPT_DIR" ] || {
+    echo "Scripts dir not found: $SCRIPT_DIR" >&2
+    return 1
+  }
+  (cd "$SCRIPT_DIR" && find . -type f -name '*.sh' -printf '%P\n' | sort)
+}
+
+pick_script() {
+  list_scripts | gum filter --placeholder "Select script..."
+}
+
+run_prompt() {
+  local rel sel cmd
+  rel="$(pick_script)" || return 1
+  sel="$SCRIPT_DIR/$rel"
+  # prevent mangling backslashes
+  read -r -e -i "$sel" -p "$ " cmd
+  [ -z "$cmd" ] && return 0
+  eval -- "$cmd"
+}
+
+main() {
+  run_prompt
+}
+
+main "$@"
