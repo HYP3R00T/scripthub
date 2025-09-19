@@ -22,11 +22,11 @@ show_help() {
 	printf "%b%s%b\n\n" "$GREEN$BOLD" "$SCRIPT_BANNER" "$RESET"
 
 	# Script title
-	printf "%b%s%b\n\n" "$BOLD" "With ♥️  from HYP3R00T" "$RESET"
+	printf "%b%s%b\n\n" "$BOLD" "With ♥️ from HYP3R00T" "$RESET"
 
 	# Metadata links
 	printf "%bGitHub:%b       https://github.com/HYP3R00T\n" "$GREEN" "$RESET"
-	printf "%bDocumentation:%b https://example.com\n\n" "$GREEN" "$RESET"
+	# printf "%bDocumentation:%b https://example.com\n\n" "$GREEN" "$RESET"
 
 	# Commands
 	printf "%bCommands:%b\n" "$BOLD" "$RESET"
