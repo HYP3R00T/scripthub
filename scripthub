@@ -13,6 +13,23 @@ LAUNCHER="$INSTALL_DIR/scripthub"
 # Functions
 # ------------------------------------------------------------------
 
+check_mise() {
+	if ! command -v mise >/dev/null 2>&1; then
+		echo "⚠️  'mise' not found! Installing..."
+		curl -fsSL https://mise.run | sh
+		export PATH="$HOME/.local/bin:$PATH"
+		echo "✅ 'mise' installed!"
+	fi
+}
+
+install_gum() {
+	if ! command -v gum >/dev/null 2>&1; then
+		echo "⚠️  'gum' not found! Installing via mise..."
+		mise install charmbracelet/gum
+		echo "✅ 'gum' installed!"
+	fi
+}
+
 clone_repo_if_missing() {
 	if [[ ! -d "$INSTALL_DIR" ]]; then
 		echo "📦 Scripthub not found in $INSTALL_DIR — cloning..."
@@ -86,6 +103,8 @@ dispatch_command() {
 # Main
 # ------------------------------------------------------------------
 main() {
+	check_mise
+	install_gum
 	clone_repo_if_missing
 	ensure_path
 	resolve_base_dir
