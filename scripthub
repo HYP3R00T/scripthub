@@ -2,41 +2,95 @@
 set -euo pipefail
 
 # ------------------------------------------------------------------
-# Script Hub - Entry Point
-# ------------------------------------------------------------------
-# Provides a single entry point for managing scripts:
-#   run  -> interactive script selection and execution (default)
-#   list -> list all scripts in the collection
-#   add  -> add a new script to the collection
+# Scripthub Bootstrap + Entry Point (Modular)
 # ------------------------------------------------------------------
 
-# Base paths
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SCRIPT_DIR="$BASE_DIR/scripts"
-
-# Source core modules
-# shellcheck disable=SC1091
-source "$SCRIPT_DIR/runner.sh"
-# shellcheck disable=SC1091
-source "$SCRIPT_DIR/add.sh"
-# shellcheck disable=SC1091
-source "$SCRIPT_DIR/help.sh"
+REPO_URL="https://github.com/HYP3R00T/scripthub"
+INSTALL_DIR="$HOME/.local/share/scripthub"
+LAUNCHER="$INSTALL_DIR/scripthub"
 
 # ------------------------------------------------------------------
-# Default command: run (interactive)
+# Functions
 # ------------------------------------------------------------------
-CMD="${1:-run}"
-shift || true # remove first argument if it exists; safe if none
+
+clone_repo_if_missing() {
+	if [[ ! -d "$INSTALL_DIR" ]]; then
+		echo "📦 Scripthub not found in $INSTALL_DIR — cloning..."
+		git clone "$REPO_URL" "$INSTALL_DIR"
+		chmod +x "$LAUNCHER"
+		echo "✅ Scripthub installed!"
+	fi
+}
+
+add_to_path_file() {
+	local rc_file=$1
+	if [[ -f "$rc_file" ]] && ! grep -q "$INSTALL_DIR" "$rc_file"; then
+		echo "export PATH=\"$INSTALL_DIR:\$PATH\"" >>"$rc_file"
+		echo "✅ Updated $rc_file"
+	fi
+}
+
+ensure_path() {
+	if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
+		echo "🟢 Adding $INSTALL_DIR to PATH in shell config files..."
+		add_to_path_file "$HOME/.bashrc"
+		add_to_path_file "$HOME/.zshrc"
+		export PATH="$INSTALL_DIR:$PATH"
+		echo "✅ Updated PATH for current session"
+	fi
+}
+
+resolve_base_dir() {
+	local source="${BASH_SOURCE[0]}"
+	while [ -L "$source" ]; do
+		local dir
+		dir="$(cd -P "$(dirname "$source")" && pwd)"
+		source="$(readlink "$source")"
+		[[ $source != /* ]] && source="$dir/$source"
+	done
+	BASE_DIR="$(cd -P "$(dirname "$source")" && pwd)"
+	SCRIPT_DIR="$BASE_DIR/scripts"
+}
+
+source_modules() {
+	# shellcheck disable=SC1091
+	source "$SCRIPT_DIR/runner.sh"
+	# shellcheck disable=SC1091
+	source "$SCRIPT_DIR/add.sh"
+	# shellcheck disable=SC1091
+	source "$SCRIPT_DIR/help.sh"
+}
+
+dispatch_command() {
+	local cmd="${1:-run}"
+	shift || true
+
+	case "$cmd" in
+	run | list)
+		handle_runner "$cmd" "$@"
+		;;
+	add)
+		handle_add "$@"
+		;;
+	help | --help | -h)
+		show_help
+		;;
+	*)
+		echo "Usage: $0 {run|list|add <file>|help}" >&2
+		exit 1
+		;;
+	esac
+}
 
 # ------------------------------------------------------------------
-# Dispatch command to appropriate handler
+# Main
 # ------------------------------------------------------------------
-case "$CMD" in
-run | list) handle_runner "$CMD" "$@" ;;
-add) handle_add "$@" ;;
-help | --help | -h) show_help ;;
-*)
-	echo "Usage: $0 {run|list|add <file>|help}" >&2
-	exit 1
-	;;
-esac
+main() {
+	clone_repo_if_missing
+	ensure_path
+	resolve_base_dir
+	source_modules
+	dispatch_command "$@"
+}
+
+main "$@"
