@@ -23,15 +23,15 @@ install_mise() {
 
 		# Persist activation for future Bash shells
 		if [[ -f "$HOME/.bashrc" ]] && ! grep -q "mise activate bash" "$HOME/.bashrc"; then
-			echo "export PATH=""$HOME"/.local/bin:"$PATH""" >>"$HOME/.bashrc"
-			echo "eval ""$HOME"/.local/bin/mise activate bash"" >>"$HOME/.bashrc"
+			echo 'export PATH="$HOME/.local/bin:$PATH"' >>"$HOME/.bashrc"
+			echo 'eval "$($HOME/.local/bin/mise activate bash)"' >>"$HOME/.bashrc"
 			echo "✅ Added Mise activation to .bashrc"
 		fi
 
 		# Persist activation for future Zsh shells
 		if [[ -f "$HOME/.zshrc" ]] && ! grep -q "mise activate zsh" "$HOME/.zshrc"; then
-			echo "export PATH=""$HOME"/.local/bin:"$PATH""" >>"$HOME/.zshrc"
-			echo "eval ""$HOME"/.local/bin/mise activate zsh"" >>"$HOME/.zshrc"
+			echo 'export PATH="$HOME/.local/bin:$PATH"' >>"$HOME/.zshrc"
+			echo 'eval "$($HOME/.local/bin/mise activate zsh)"' >>"$HOME/.zshrc"
 			echo "✅ Added Mise activation to .zshrc"
 		fi
 
