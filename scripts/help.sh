@@ -19,13 +19,13 @@ EOF
 
 show_help() {
 	# Banner
-	printf "%b%s%b\n\n" "$GREEN$BOLD" "$SCRIPT_BANNER" "$RESET"
+	printf "\n%b%s%b\n\n" "$GREEN$BOLD" "$SCRIPT_BANNER" "$RESET"
 
 	# Script title
-	printf "%b%s%b\n\n" "$BOLD" "With ♥️ from HYP3R00T" "$RESET"
+	printf "%b%s%b\n" "$BOLD" "With ♥️ from HYP3R00T" "$RESET\n"
 
 	# Metadata links
-	printf "%bGitHub:%b       https://github.com/HYP3R00T\n" "$GREEN" "$RESET"
+	printf "%bGitHub:%b https://github.com/HYP3R00T/scripthub\n\n" "$GREEN" "$RESET"
 	# printf "%bDocumentation:%b https://example.com\n\n" "$GREEN" "$RESET"
 
 	# Commands
