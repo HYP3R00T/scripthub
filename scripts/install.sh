@@ -17,43 +17,45 @@ install_mise() {
 		echo "⚠️  'mise' not found! Installing..."
 		curl -fsSL https://mise.run | sh
 
-		# Persist for future shells
-		if [[ -f "$HOME/.bashrc" ]] && ! grep -q "mise activate bash" "$HOME/.bashrc"; then
-			echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >>"$HOME/.bashrc"
-			echo "eval \"$HOME/.local/bin/mise activate bash\"" >>"$HOME/.bashrc"
-			echo "✅ Added mise path and activation to ~/.bashrc"
-		fi
+		# Immediately activate Mise in current session
+		export PATH="$HOME/.local/bin:$PATH"
+		eval "$("$HOME"/.local/bin/mise activate bash)"
 
-		if [[ -f "$HOME/.zshrc" ]] && ! grep -q "mise activate zsh" "$HOME/.zshrc"; then
-			echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >>"$HOME/.zshrc"
-			echo "eval \"$HOME/.local/bin/mise activate zsh\"" >>"$HOME/.zshrc"
-			echo "✅ Added mise path and activation to ~/.zshrc"
-		fi
+		# Persist activation for future shells
+		for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
+			if [[ -f "$rc" ]] && ! grep -q "mise activate" "$rc"; then
+				echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >>"$rc"
+				echo "eval \"$HOME/.local/bin/mise activate bash\"" >>"$rc"
+				echo "✅ Added Mise path and activation to $rc"
+			fi
+		done
 
-		echo "✅ 'mise' installed!"
-		echo "💡 Please run 'source ~/.bashrc' or open a new terminal before using scripthub."
+		echo "✅ 'mise' installed and activated!"
 	else
-		echo "✅ 'mise' already installed!"
-	fi
-}
-
-trust_mise_config() {
-	# Trust scripthub config if not already trusted
-	CONFIG_FILE="$INSTALL_DIR/mise.toml"
-	if [[ -f "$CONFIG_FILE" ]]; then
-		echo "🔐 Trusting scripthub mise config..."
-		mise trust "$CONFIG_FILE" &>/dev/null || true
-		echo "✅ Config trusted"
+		# Ensure it's active for this script
+		eval "$("$HOME"/.local/bin/mise activate bash)"
+		echo "✅ 'mise' already installed and activated in current shell"
 	fi
 }
 
 install_gum() {
 	if ! command -v gum &>/dev/null; then
-		echo "⚠️  'gum' not found! Installing via mise..."
+		echo "⚠️  'gum' not found! Installing via Mise..."
 		mise use -g gum@latest
 		echo "✅ 'gum' installed!"
 	else
 		echo "✅ 'gum' already available"
+	fi
+}
+
+install_scripthub() {
+	if [[ ! -d "$INSTALL_DIR" ]]; then
+		echo "📦 Installing Scripthub..."
+		git clone "$REPO_URL" "$INSTALL_DIR"
+		chmod +x "$INSTALL_DIR/scripthub"
+		echo "✅ Scripthub installed at $INSTALL_DIR"
+	else
+		echo "✅ Scripthub already installed"
 	fi
 }
 
@@ -74,14 +76,12 @@ ensure_path() {
 	fi
 }
 
-install_scripthub() {
-	if [[ ! -d "$INSTALL_DIR" ]]; then
-		echo "📦 Installing scripthub..."
-		git clone "$REPO_URL" "$INSTALL_DIR"
-		chmod +x "$INSTALL_DIR/scripthub"
-		echo "✅ Scripthub installed at $INSTALL_DIR"
-	else
-		echo "✅ Scripthub already installed"
+trust_scripthub_config() {
+	local config_file="$INSTALL_DIR/mise.toml"
+	if [[ -f "$config_file" ]]; then
+		echo "🔐 Trusting Scripthub Mise config..."
+		mise trust "$config_file" &>/dev/null || true
+		echo "✅ Config trusted"
 	fi
 }
 
@@ -103,7 +103,7 @@ main() {
 	install_gum
 	install_scripthub
 	ensure_path
-	trust_mise_config
+	trust_scripthub_config
 	final_tips
 }
 
