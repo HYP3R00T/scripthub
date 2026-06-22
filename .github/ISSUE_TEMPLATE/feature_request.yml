@@ -1,0 +1,66 @@
+name: 💡 Feature Request
+description: Suggest a new idea, enhancement, or improvement.
+title: "[Feature]: "
+labels: [enhancement]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature! Before submitting, please check if a similar request already exists.
+
+        **Good feature requests are:**
+        - Clear and descriptive
+        - Focused on solving a specific problem
+        - Aligned with ScriptHub's focus on discovery and command composition
+        - Documented with examples when helpful
+
+  - type: input
+    id: motivation
+    attributes:
+      label: Problem or Motivation
+      description: What problem does this solve for someone trying to find a script or compose a command?
+      placeholder: "I can find the script, but I still have to remember the exact arguments by hand."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution
+      description: Describe how you'd like ScriptHub to behave.
+      placeholder: "Add a preview action that fills the command line from saved metadata examples."
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered a simpler approach or a manual workflow? Explain why the proposed solution is still worthwhile.
+      placeholder: "I could keep using shell history, but ScriptHub could make this easier to discover and trust."
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any screenshots, links, or other helpful references (optional).
+      placeholder: "Screenshots, related discussions, or examples..."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Prerequisites
+      options:
+        - label: I have searched for existing feature requests and found none
+          required: true
+        - label: This request does not depend on ScriptHub auto-executing scripts or injecting commands into my shell
+          required: false
+
+  - type: checkboxes
+    id: agreement
+    attributes:
+      label: Agreement
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
+        - label: I understand this feature will be reviewed and may not be implemented
+          required: false
