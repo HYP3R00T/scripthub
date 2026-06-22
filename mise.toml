@@ -1,2 +1,15 @@
 [tools]
-gum = "0.17.0"
+prek = "latest"
+rumdl = "latest"
+rust = "latest"
+shellcheck = "latest"
+
+[settings]
+experimental = true
+
+[hooks]
+enter = "bash ./scripts/enter_project.sh"
+
+[env]
+_.file = '.env'       # for sensitive data
+UV_LINK_MODE = "copy"
