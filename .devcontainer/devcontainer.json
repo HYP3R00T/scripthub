@@ -1,0 +1,25 @@
+{
+    "name": "scripthub",
+    "build": {
+        "context": ".",
+        "dockerfile": "Dockerfile"
+    },
+    "postCreateCommand": "scripts/setup.sh",
+    "remoteEnv": {
+        "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "tamasfe.even-better-toml",
+                "christian-kohler.path-intellisense",
+                "redhat.vscode-yaml",
+                "hverlin.mise-vscode",
+                "EditorConfig.EditorConfig",
+                "timonwong.shellcheck",
+                "DavidAnson.vscode-markdownlint",
+                "github.vscode-github-actions"
+            ]
+        }
+    }
+}
