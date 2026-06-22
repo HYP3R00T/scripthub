@@ -13,3 +13,19 @@ enter = "bash ./scripts/enter_project.sh"
 [env]
 _.file = '.env'       # for sensitive data
 UV_LINK_MODE = "copy"
+
+[tasks.check]
+description = "Type-check the project without building a final binary"
+run = "cargo check"
+
+[tasks.build]
+description = "Build the debug binary"
+run = "cargo build"
+
+[tasks.run]
+description = "Build and run the application"
+run = "cargo run"
+
+[tasks.release]
+description = "Build and run the optimized release binary"
+run = "cargo run --release"
