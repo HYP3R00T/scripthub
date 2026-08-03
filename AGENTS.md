@@ -22,9 +22,9 @@ The shell-based prototype is preserved on the `legacy-shell` branch. Do not use 
 
 Key locations currently include:
 
+- `.agents/skills/` — manually invoked issue refinement and delivery workflows;
 - `.devcontainer/` — reference Linux development environment;
-- `docs/product/scope.md` — accepted product scope and non-goals;
-- `docs/development/` — contributor environment documentation;
+- `docs/index.md` — concise project documentation;
 - `mise.toml` — repository tools and shared tasks; and
 - `.github/workflows/` — repository and documentation checks.
 

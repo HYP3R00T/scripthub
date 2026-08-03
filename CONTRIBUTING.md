@@ -24,6 +24,19 @@ Install Git, Docker, Visual Studio Code, and the Dev Containers extension. Then:
    prek run --all-files
    ```
 
+## Agent-assisted issue workflow
+
+Trusted maintainers may invoke the repository skills manually with one full GitHub issue URL:
+
+```text
+refine-issue https://github.com/HYP3R00T/scripthub/issues/123
+issue-to-pr https://github.com/HYP3R00T/scripthub/issues/123
+```
+
+`refine-issue` prepares one backlog issue for approval without implementing it. After approval, `issue-to-pr` delivers that ready issue to a verified pull request and stops before merge. Both skills require authenticated GitHub access and one unambiguous Project with the expected lifecycle states; they stop safely when those prerequisites are unavailable.
+
+The skills do not merge, publish, or replace human review. External contributors should continue to use forks and the normal contribution process.
+
 ## Make a focused change
 
 - Follow the existing structure and documented product boundaries.

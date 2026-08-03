@@ -46,7 +46,7 @@ The reference development environment is the repository's Dev Container. It prov
    uvx zensical build --clean
    ```
 
-See the [development environment documentation](docs/development/environment.md) for details.
+See the [project documentation](docs/index.md) for a concise overview.
 
 ## Contributing
 

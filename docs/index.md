@@ -4,17 +4,10 @@ icon: lucide/library-big
 
 # ScriptHub
 
-ScriptHub is a Linux-first application for finding scripts in user-controlled collections and inserting a selected script's path into the current shell prompt.
+ScriptHub is a Linux-first tool for finding scripts in user-controlled collections.
 
-## Current status
+A user searches for a script and selects it. ScriptHub returns the selected path, and explicit shell integration inserts a safely quoted representation into the current command line. The command remains editable so the user can add arguments, pipes, and redirections before deciding whether to execute it.
 
-The repository currently contains the language-agnostic development foundation. Application code, runtime tooling, and shell integration will be introduced through separate, reviewable increments.
+ScriptHub does not execute a script merely because it was selected. Collections remain ordinary user-controlled directories and may be stored locally or in independent Git repositories.
 
-## Product boundary
-
-Selecting a script does not execute it. ScriptHub leaves arguments, pipes, redirections, review, and execution under the user's control.
-
-## Documentation
-
-- [Product scope](product/scope.md)
-- [Development environment](development/environment.md)
+The current repository contains the development foundation. Application code and installation instructions will be introduced in later increments.
