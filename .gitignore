@@ -1,0 +1,13 @@
+# Find gitignore templates for various languages in the following repo
+# https://github.com/github/gitignore
+# Local environment and mise configuration
+.env
+.env.*
+!.env.example
+mise.local.toml
+mise.*.local.toml
+
+# Generated documentation and tool caches
+.cache/
+.rumdl_cache/
+site/

@@ -1,0 +1,13 @@
+[global]
+flavor = "standard"
+disable = [
+  "MD013", # Line length
+  "MD033", # No inline HTML
+  "MD034", # No bare URLs
+  "MD036", # No emphasis as heading
+  "MD037", # Spaces around emphasis
+  "MD044", # Proper names
+  "MD046", # Code block style
+  "MD049", # Emphasis style
+  "MD059", # Link text
+]

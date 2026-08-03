@@ -1,0 +1,60 @@
+name: 💡 Feature proposal
+description: Describe a problem or opportunity for the maintainers to consider.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for sharing an idea. Explain the problem before proposing an implementation.
+
+        A proposal is not automatically accepted, scheduled, or approved for development. Wait for maintainer agreement before opening a pull request.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+      description: What limitation, need, or opportunity should the project address? Who is affected?
+      placeholder: "When ..., users cannot ..., which causes ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired-outcome
+    attributes:
+      label: Desired outcome
+      description: Describe the result or capability you would like, without prescribing unnecessary implementation details.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Possible solution
+      description: If you have an approach in mind, describe it here. This is optional and may not be the final design.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe existing workarounds or alternative approaches, if any.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add examples, screenshots, references, constraints, or related issues.
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: I understand that this proposal may be declined, changed, or left unscheduled.
+          required: true
+        - label: I will wait for maintainer approval before beginning substantial implementation work.
+          required: true
+        - label: I agree to follow this project's Code of Conduct.
+          required: true

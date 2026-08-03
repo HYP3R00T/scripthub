@@ -1,134 +1,63 @@
+<!-- rumdl-disable MD041 -->
+
+<div align="center">
+
 # ScriptHub
 
-> [!WARNING]
-> ScriptHub does not audit or verify scripts.
-> Run only code you understand and trust.
-> You are responsible for what you execute.
+Find scripts from your own collections and insert their paths into your shell command line.
 
-ScriptHub is a lightweight script manager to organize, run, and add your personal scripts, all from a single entry point.
+[Documentation](https://hyp3r00t.github.io/scripthub/) · [Contributing](CONTRIBUTING.md)
 
-## 💡 Features
+[![Quality Gate](https://img.shields.io/github/actions/workflow/status/HYP3R00T/scripthub/ci.yaml?branch=main&style=for-the-badge&label=Quality%20Gate&logo=githubactions)](https://github.com/HYP3R00T/scripthub/actions/workflows/ci.yaml)
+[![License: MIT](https://img.shields.io/github/license/HYP3R00T/scripthub?style=for-the-badge&label=License)](LICENSE)
 
-* Run scripts interactively or list them.
-* Add new scripts to your collection easily.
-* Auto-bootstrap from GitHub.
-* Automatically adds itself to your PATH.
-* Works in bash and zsh.
+</div>
 
-## 🚀 Installation
+## About
 
-Run this command in your terminal:
+ScriptHub is a Linux-first application for searching personal script collections. After a script is selected, its path is inserted into the current shell prompt so the user can add arguments, pipes, and redirections before choosing to execute it.
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/HYP3R00T/scripthub/main/scripts/install.sh | bash
-````
+The project is currently establishing its development foundation. The application implementation and installation instructions will be added in a separate increment.
 
-This will:
+## Product direction
 
-1. Download and run the ScriptHub installer.
-2. Install [`mise`](https://mise.jdx.dev) automatically if not already present.
-3. Clone the ScriptHub repository to `~/.local/share/scripthub` if not already present.
-4. Add `~/.local/share/scripthub` to your PATH in `.bashrc` and `.zshrc` if needed.
-5. Make the current session aware of the new PATH, so you can run `scripthub` immediately.
+ScriptHub aims to:
 
-## 📚 Usage
+- search scripts stored in one or more user-controlled directories;
+- work with collections kept locally or in independent Git repositories;
+- insert a safely quoted script path without executing it; and
+- integrate with shells through a small, explicit shell-side adapter.
 
-Once installed, you can run ScriptHub from **any terminal session**:
+ScriptHub does not aim to replace the shell, hide command execution, or require it to manage a collection's Git history.
 
-```bash
-scripthub run       # Interactive script launcher
-scripthub list      # List all scripts in your collection
-scripthub add FILE  # Add a new script
-scripthub help      # Show help page
-```
+## Development
 
-### Examples
+The reference development environment is the repository's Dev Container. It provides Mise and the language-agnostic repository checks without selecting an application language or architecture prematurely.
 
-```bash
-# Run the interactive script launcher
-scripthub run
+1. Install Docker, Visual Studio Code, and the Dev Containers extension.
+2. Clone this repository and open it in Visual Studio Code.
+3. Run **Dev Containers: Reopen in Container**.
+4. Verify the foundation:
 
-# List all scripts
-scripthub list
+   ```bash
+   mise doctor
+   mise ls --current
+   prek run --all-files
+   uvx zensical build --clean
+   ```
 
-# Add a new script to your collection
-scripthub add ~/Downloads/myscript.sh
+See the [development environment documentation](docs/development/environment.md) for details.
 
-# Add a script to a specific folder in the collection
-scripthub add ~/Downloads/myscript.sh utilities
+## Contributing
 
-# Show the help page
-scripthub help
-```
+Contributions are welcome when they are focused and aligned with the project's direction. Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a change.
 
-## 🛣️ Roadmap
+## License
 
-Small, focused next steps we plan to add:
+ScriptHub is available under the [MIT License](LICENSE).
 
-* **Update** - `scripthub update`
-  Pull the latest changes from your GitHub fork (keep local scripts up-to-date).
+<div align="center">
 
-* **Publish** - `scripthub publish` (name can change)
-  Push local changes (new/edited scripts) back to your GitHub fork. Clear, single-command upload from local → remote.
+Developed with ❤️ by [HYP3R00T](https://github.com/HYP3R00T)
 
-* **Script templates & scaffolding** - `scripthub new <name>`
-  Quickly create new scripts with a standard header, metadata fields, and executable permission.
-
-* **Share & import** - `scripthub import <url|gist>`
-  Import scripts from trusted GitHub repos or gists (with a clear warning prompt before executing any fetched code).
-
-* **Self-diagnosis** - `scripthub doctor`
-  Optional: detect broken PATH entries, missing dependencies, and common misconfigurations.
-
-(We intentionally will not add duplicate fuzzy-search or category systems - `gum` and folder-based organization already cover those needs. GitHub provides history/versioning.)
-
-## 🛠️ Fork & Customize
-
-If you want to use ScriptHub for your own scripts, here’s how:
-
-1. **Fork this repository** into your own GitHub account.
-2. **Update the installation script** (`install.sh`) to point to your fork instead of this repo:
-
-    ```bash
-    curl -fsSL https://raw.githubusercontent.com/<your-username>/<your-repo>/main/scripts/install.sh | bash
-    ```
-
-3. **Replace repo references**
-   Anywhere this repo uses `HYP3R00T/scripthub`, change it to your GitHub username/repo:
-
-   * `install.sh`
-   * Any documentation or helper scripts
-
-4. **Verify installation**
-   Run your updated install command and confirm that:
-
-   * ScriptHub installs correctly.
-   * PATH is updated.
-   * Your scripts run as expected.
-
-### Branding & Support
-
-By default, ScriptHub ships with the original branding. You're free to keep it or rebrand the fork.
-
-If you find ScriptHub useful, please consider:
-
-* 🌟 **Starring this repo** on GitHub
-* 💖 **Sponsoring me** (linkable once enabled)
-
-Your support helps keep me building in public.
-
-## 🌍 About the Author
-
-Hi, I’m **Rajesh Das**, a completely independent developer, full-time open source contributor, and someone who codes and learns in public.
-
-I don’t have a traditional source of revenue; everything I build is fueled by curiosity and the hope that others find it useful. If you’d like to support me:
-
-* Visit my **personal site & blog**: [rajeshdas.dev](https://rajeshdas.dev)
-* Explore my **full project collection**: [hyperroot.dev](https://hyperroot.dev)
-* Consider **sponsoring me** (or simply giving this repo a ⭐) to help me keep building in the open.
-
-Your encouragement means a lot and directly supports more tools like ScriptHub.
-
-## 🤝 License
-
-[MIT](LICENSE); Fork freely, customize endlessly!
+</div>

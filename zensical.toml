@@ -1,0 +1,58 @@
+[project]
+site_name = "ScriptHub"
+site_description = "Find scripts from your own collections and insert their paths into your shell command line."
+repo_name = "HYP3R00T/scripthub"
+repo_url = "https://github.com/HYP3R00T/scripthub"
+site_author = "HYP3R00T"
+copyright = "Copyright &copy; 2025-2026 HYP3R00T"
+
+nav = [
+  { Home = "index.md" },
+  { "Product scope" = "product/scope.md" },
+  { "Development environment" = "development/environment.md" },
+]
+
+[project.theme]
+language = "en"
+features = [
+  "content.action.edit",
+  "content.action.view",
+  "content.code.copy",
+  "navigation.footer",
+  "navigation.instant",
+  "navigation.top",
+  "search.highlight",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch theme"
+
+[[project.theme.palette]]
+scheme = "default"
+media = "(prefers-color-scheme: light)"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+scheme = "slate"
+media = "(prefers-color-scheme: dark)"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+[project.theme.icon]
+logo = "lucide/library-big"
+repo = "fontawesome/brands/github"
+next = "lucide/arrow-right"
+previous = "lucide/arrow-left"
+search = "lucide/search"
+top = "lucide/arrow-up"
+edit = "lucide/file-pen-line"
+view = "lucide/file-braces-corner"
+
+[project.markdown_extensions.admonition]
+
+[project.markdown_extensions.pymdownx.details]
+
+[project.markdown_extensions.pymdownx.superfences]

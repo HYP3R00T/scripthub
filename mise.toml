@@ -1,2 +1,21 @@
 [tools]
-gum = "0.17.0"
+prek = "latest"
+rumdl = "latest"
+shellcheck = { version = "latest", os = ["linux", "macos"] }
+
+[settings]
+experimental = true
+lockfile = true
+
+[settings.github]
+use_git_credentials = true
+
+[hooks]
+enter = { run = "bash ./scripts/enter_project.sh" }
+
+[tasks.docs]
+description = "Serve the documentation locally"
+run = "uvx zensical serve"
+
+[env]
+_.file = ".env"  # for sensitive data

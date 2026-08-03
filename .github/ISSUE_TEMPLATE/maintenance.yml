@@ -1,0 +1,90 @@
+name: 🔧 Maintenance task
+description: Propose focused engineering, tooling, dependency, or workflow work.
+title: "[Maintenance]: "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe one independently reviewable outcome. Use the feature form for a new user-facing capability and the bug form for incorrect existing behavior.
+
+        Do not report security vulnerabilities here. Follow the repository's Security Policy.
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: What useful result should exist when this issue is complete, and who or what benefits?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What current limitation, recurring cost, risk, or repository evidence motivates this work?
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints
+      description: Which decisions, interfaces, compatibility rules, privacy boundaries, or behaviors must not change?
+      placeholder: |
+        - Preserve ...
+        - Do not ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: List observable conditions that prove the outcome.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification
+      description: List exact automated checks, real-surface exercises, or other evidence required.
+      placeholder: |
+        - `mise run ...`
+        - Manually verify ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Link work that genuinely blocks this outcome and explain why. Write "None" when unblocked.
+    validations:
+      required: true
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+      description: Identify related work this issue must not absorb.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched existing issues and pull requests for duplicate or superseding work.
+          required: true
+        - label: I removed credentials, private information, and sensitive logs.
+          required: true
+        - label: I will wait for maintainer agreement before beginning substantial implementation.
+          required: true
+        - label: I agree to follow this project's Code of Conduct.
+          required: true

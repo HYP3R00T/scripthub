@@ -1,0 +1,102 @@
+name: 🐛 Bug report
+description: Report a reproducible problem or unexpected behavior.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve the project. Search existing issues first, then provide the shortest reproduction you can.
+
+        Do not report security vulnerabilities here. Follow the repository's Security Policy instead.
+
+  - type: input
+    id: version
+    attributes:
+      label: Project version or commit
+      description: Identify the affected release, tag, or commit.
+      placeholder: "v1.2.3 or commit abc1234"
+    validations:
+      required: true
+
+  - type: input
+    id: operating-system
+    attributes:
+      label: Operating system
+      description: Include the operating system and version.
+      placeholder: "Windows 11, macOS 15, or Ubuntu 24.04"
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Relevant environment details
+      description: Include runtimes, dependencies, configuration, installation method, or container details that may affect the problem.
+      placeholder: "Runtime and dependency versions, configuration, installation method, or container information"
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide the smallest complete set of steps, commands, configuration, or example repository that reproduces the problem.
+      placeholder: |
+        1. Configure ...
+        2. Run ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Describe what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Describe what happened instead.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: Reproduction frequency
+      description: How often does the problem occur?
+      options:
+        - Every time
+        - Often
+        - Intermittently
+        - Once
+        - Unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs, errors, or screenshots
+      description: Add relevant evidence if available. Use code blocks for logs, and remove secrets and private information before submitting.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add workarounds, related issues, or other useful information.
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched the existing issues and did not find a duplicate.
+          required: true
+        - label: I have removed secrets, credentials, and private information from this report.
+          required: true
+        - label: I agree to follow this project's Code of Conduct.
+          required: true
