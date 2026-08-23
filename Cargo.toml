@@ -2,5 +2,10 @@
 name = "scripthub"
 version = "0.1.0"
 edition = "2024"
+description = "Linux-first tool for finding scripts in user-controlled collections"
+license = "MIT"
 
 [dependencies]
+color-eyre = "0.6.5"
+crossterm = "0.29.0"
+ratatui = "0.30.2"
