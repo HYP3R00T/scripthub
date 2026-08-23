@@ -1,6 +1,7 @@
 [tools]
 prek = "latest"
 rumdl = "latest"
+rust = "latest"
 shellcheck = { version = "latest", os = ["linux", "macos"] }
 uv = "latest"
 
@@ -16,6 +17,8 @@ enter = { run = "bash ./scripts/enter_project.sh" }
 
 [env]
 _.file = ".env"  # for sensitive data
+MISE_RUSTUP_HOME = "{{env.HOME}}/.local/share/rustup"
+MISE_CARGO_HOME = "{{env.HOME}}/.local/share/cargo"
 
 [tasks.docs]
 description = "Serve the documentation locally"
