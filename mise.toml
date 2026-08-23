@@ -13,9 +13,9 @@ use_git_credentials = true
 [hooks]
 enter = { run = "bash ./scripts/enter_project.sh" }
 
+[env]
+_.file = ".env"  # for sensitive data
+
 [tasks.docs]
 description = "Serve the documentation locally"
 run = "uvx zensical serve"
-
-[env]
-_.file = ".env"  # for sensitive data
