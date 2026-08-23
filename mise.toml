@@ -3,6 +3,7 @@ prek = "latest"
 rumdl = "latest"
 rust = "latest"
 shellcheck = { version = "latest", os = ["linux", "macos"] }
+tombi = "latest"
 uv = "latest"
 
 [settings]

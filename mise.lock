@@ -135,6 +135,10 @@ checksum = "sha256:8a4e35ab0b331c85d73567b12f2a444df187f483e5079ceffa6bda1faa2e7
 url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.zip"
 url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056944"
 
+[[tools.tombi]]
+version = "1.2.4"
+backend = "aqua:tombi-toml/tombi"
+
 [[tools.uv]]
 version = "0.12.5"
 backend = "aqua:astral-sh/uv"
