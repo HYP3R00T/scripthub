@@ -90,3 +90,7 @@ Containerfile text eol=lf
 .gitattributes export-ignore
 .gitignore     export-ignore
 .gitkeep       export-ignore
+
+# Rust
+*.rs       text diff=rust
+Cargo.lock text
