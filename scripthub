@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ------------------------------------------------------------------
+# Scripthub Entry Point (Modular)
+# ------------------------------------------------------------------
+
+INSTALL_DIR="$HOME/.local/share/scripthub"
+SCRIPT_DIR="$INSTALL_DIR/scripts"
+
+# ------------------------------------------------------------------
+# Functions
+# ------------------------------------------------------------------
+
+resolve_base_dir() {
+	local source="${BASH_SOURCE[0]}"
+	while [ -L "$source" ]; do
+		local dir
+		dir="$(cd -P "$(dirname "$source")" && pwd)"
+		source="$(readlink "$source")"
+		[[ $source != /* ]] && source="$dir/$source"
+	done
+	BASE_DIR="$(cd -P "$(dirname "$source")" && pwd)"
+	SCRIPT_DIR="$BASE_DIR/scripts"
+}
+
+source_modules() {
+	# shellcheck disable=SC1091
+	source "$SCRIPT_DIR/runner.sh"
+	# shellcheck disable=SC1091
+	source "$SCRIPT_DIR/add.sh"
+	# shellcheck disable=SC1091
+	source "$SCRIPT_DIR/help.sh"
+}
+
+dispatch_command() {
+	local cmd="${1:-run}"
+	shift || true
+
+	case "$cmd" in
+	run | list)
+		handle_runner "$cmd" "$@"
+		;;
+	add)
+		handle_add "$@"
+		;;
+	help | --help | -h)
+		show_help
+		;;
+	*)
+		echo "Usage: $0 {run|list|add <file>|help}" >&2
+		exit 1
+		;;
+	esac
+}
+
+# ------------------------------------------------------------------
+# Main
+# ------------------------------------------------------------------
+main() {
+	# Check if core scripts exist
+	if [[ ! -d "$SCRIPT_DIR" ]] || [[ ! -f "$SCRIPT_DIR/runner.sh" ]]; then
+		echo "⚠️  Scripthub is not fully installed!"
+		echo "Please run the installer first:"
+		echo "    $INSTALL_DIR/scripts/install.sh"
+		exit 1
+	fi
+
+	resolve_base_dir
+	source_modules
+	dispatch_command "$@"
+}
+
+main "$@"
